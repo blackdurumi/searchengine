@@ -1,19 +1,19 @@
 package com.blackdurumi.searchengine.api
 
-import com.blackdurumi.searchengine.service.TrieService
+import com.blackdurumi.searchengine.application.TrieApplication
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api")
 class ApiController(
-    private val trieService: TrieService,
+    private val trieApplication: TrieApplication,
 ) {
 
     @PostMapping("/search")
     fun search(
         @RequestParam keyword: String
     ): String {
-        trieService.increaseSearchCount(keyword)
+        trieApplication.increaseSearchCount(keyword)
         return "ok"
     }
 
@@ -23,6 +23,6 @@ class ApiController(
         @RequestParam(value = "limit", defaultValue = "5") limit: Int
     ): List<String> {
         if (query.isBlank()) return emptyList()
-        return trieService.autoComplete(query, limit)
+        return trieApplication.autoComplete(query, limit)
     }
 }

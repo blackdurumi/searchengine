@@ -16,23 +16,21 @@ class Trie {
         cur.count = count
     }
 
-    fun updateCount(word: String) {
+    fun updateOrInsert(word: String, newCount: Int) {
         var cur = root
         for (c in word) {
-            cur = cur.children[c] ?: return   // 아직 Trie에 없음 → lazy load 때만 재구축
+            cur = cur.children.computeIfAbsent(c) { TrieNode() }
         }
-        if (cur.isEnd) {
-            cur.count += 1
-        }
+        cur.isEnd = true
+        cur.count = newCount
     }
 
-    fun containsPrefix(prefix: String): Boolean {
+    fun hasExactWord(word: String): Boolean {
         var cur = root
-        for (ch in prefix) {
-            val next = cur.children[ch] ?: return false
-            cur = next
+        for (c in word) {
+            cur = cur.children[c] ?: return false
         }
-        return true
+        return cur.isEnd
     }
 
     fun search(prefix: String, limit: Int): List<String> {
