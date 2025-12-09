@@ -17,7 +17,7 @@ class ApiController(
         return "ok"
     }
 
-    @GetMapping
+    @GetMapping("/auto-complete")
     fun autoComplete(
         @RequestParam("q") query: String,
         @RequestParam(value = "limit", defaultValue = "5") limit: Int
